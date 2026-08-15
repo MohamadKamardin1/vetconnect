@@ -1,0 +1,33 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Local databases and runtime artifacts
+*.sqlite3
+*.sqlite3-journal
+.coverage
+coverage.xml
+htmlcov/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Django
+staticfiles/
+media/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
