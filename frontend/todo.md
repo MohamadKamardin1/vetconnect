@@ -10,3 +10,14 @@
 - [x] Add role-specific workspace modules for records, schedules, sales, clinical workflow, KYC, and operations.
 - [x] Verify mobile navigation, reduced-motion support, keyboard access, type safety, and production build.
 - [x] Copy the completed frontend into the repository, commit, and push to `sultan`.
+
+## English–Kiswahili language support
+
+- [x] Audit visible copy and current shared layout patterns across every route.
+- [x] Add typed English and Kiswahili translation resources with locale persistence.
+- [x] Add accessible desktop and mobile language controls to public and protected navigation.
+- [x] Translate public discovery, trust, marketplace, community, and care-tool experiences.
+- [x] Translate authentication and guided profile-studio onboarding.
+- [x] Translate role-specific dashboard navigation, readiness flows, empty states, and interactions.
+- [x] Verify language switching, local persistence, mobile layout, reduced motion, type safety, and production build.
+- [ ] Synchronize, commit, and push the bilingual frontend to `sultan`.

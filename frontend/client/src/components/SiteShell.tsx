@@ -3,6 +3,7 @@ import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { BrandMark } from "./BrandMark";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const links = [["Find care", "/find-care"], ["Care routes", "/care-routes"], ["For professionals", "/professionals"], ["Marketplace", "/marketplace"], ["Community", "/community"], ["Care tools", "/tools"]] as const;
 
@@ -14,10 +15,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <div className="container flex h-[76px] items-center justify-between gap-5">
         <BrandMark />
         <nav className="hidden items-center gap-6 lg:flex">{links.map(([label, href]) => <Link key={href} href={href} className={`text-sm font-bold transition hover:text-[#b78a38] ${location === href ? "text-[#b78a38]" : "text-[#365747]"}`}>{label}</Link>)}</nav>
-        <div className="hidden items-center gap-3 sm:flex"><Link href="/login" className="text-sm font-bold text-[#244c3d]">Sign in</Link><Link href="/portal/overview" className="gold-button !px-4 !py-2.5">My care space</Link></div>
+        <div className="hidden items-center gap-3 sm:flex"><LanguageSwitcher compact/><Link href="/login" className="text-sm font-bold text-[#244c3d]">Sign in</Link><Link href="/portal/overview" className="gold-button !px-4 !py-2.5">My care space</Link></div>
         <button className="grid h-11 w-11 place-items-center rounded-full border border-[#dfcfaa] text-[#244c3d] lg:hidden" onClick={() => setOpen(!open)} aria-label="Toggle navigation">{open ? <X size={20} /> : <Menu size={21} />}</button>
       </div>
-      {open && <div className="container border-t border-[#eadfca] py-4 lg:hidden"><div className="grid gap-2">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-bold text-[#244c3d] hover:bg-[#fff6e6]">{label}</Link>)}<Link href="/login" className="gold-button mt-2">Sign in to your care space</Link></div></div>}
+      {open && <div className="container border-t border-[#eadfca] py-4 lg:hidden"><div className="grid gap-2"><div className="mb-2 flex items-center justify-between px-3"><span className="text-[10px] font-extrabold uppercase tracking-[.13em] text-[#8c7c59]">Language</span><LanguageSwitcher/></div>{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 font-bold text-[#244c3d] hover:bg-[#fff6e6]">{label}</Link>)}<Link href="/login" className="gold-button mt-2">Sign in to your care space</Link></div></div>}
     </header>
     {children}
     <footer className="border-t border-[#e7dcc7] bg-white"><div className="container grid gap-10 py-12 md:grid-cols-[1.25fr_.75fr_.75fr]">
