@@ -27,4 +27,4 @@
 - [x] Audit formal, literal, and overly technical Kiswahili phrases across the interface.
 - [x] Replace them with short, natural Tanzania-first Kiswahili while retaining familiar English product terms.
 - [x] Visually verify the revised Kiswahili on public and protected mobile routes, then run the production build.
-- [ ] Synchronize, commit, and push the copy-quality update to `sultan`.
+- [x] Synchronize, commit, and push the copy-quality update to `sultan`.
