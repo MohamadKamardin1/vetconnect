@@ -21,3 +21,10 @@
 - [x] Translate role-specific dashboard navigation, readiness flows, empty states, and interactions.
 - [x] Verify language switching, local persistence, mobile layout, reduced motion, type safety, and production build.
 - [x] Synchronize, commit, and push the bilingual frontend to `sultan`.
+
+## Natural Tanzanian Kiswahili refinement
+
+- [x] Audit formal, literal, and overly technical Kiswahili phrases across the interface.
+- [x] Replace them with short, natural Tanzania-first Kiswahili while retaining familiar English product terms.
+- [x] Visually verify the revised Kiswahili on public and protected mobile routes, then run the production build.
+- [ ] Synchronize, commit, and push the copy-quality update to `sultan`.
