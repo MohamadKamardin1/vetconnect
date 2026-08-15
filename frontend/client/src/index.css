@@ -42,8 +42,11 @@
 }
 
 * { @apply border-border; }
-html { scroll-behavior: smooth; }
-body { @apply bg-background text-foreground antialiased; font-family: "Manrope", sans-serif; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body { @apply bg-background text-foreground antialiased; min-height: 100%; font-family: "Manrope", sans-serif; }
+#root { min-height: 100%; }
+:where([id]) { scroll-margin-top: 5.5rem; }
+:where([data-scroll-surface], .scroll-smooth) { scroll-behavior: smooth; overscroll-behavior-y: contain; }
 button, a { -webkit-tap-highlight-color: transparent; }
 
 @layer components {

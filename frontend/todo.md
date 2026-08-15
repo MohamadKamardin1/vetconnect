@@ -28,3 +28,10 @@
 - [x] Replace them with short, natural Tanzania-first Kiswahili while retaining familiar English product terms.
 - [x] Visually verify the revised Kiswahili on public and protected mobile routes, then run the production build.
 - [x] Synchronize, commit, and push the copy-quality update to `sultan`.
+
+## Site-wide smooth scrolling
+
+- [x] Audit global styles, nested scroll areas, anchors, and current reduced-motion behavior.
+- [x] Add smooth scrolling for all full-page and internal scroll surfaces without changing keyboard accessibility.
+- [x] Verify standard and reduced-motion behavior, then run TypeScript and production build checks.
+- [ ] Synchronize, commit, and push the smooth-scrolling enhancement to `sultan`.
