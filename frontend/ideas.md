@@ -78,3 +78,9 @@ A simplified gold enamel seal formed by an abstract veterinary cross and a curve
 ### Signature Brand Color
 
 **Credential Gold — `#B78A38`**
+
+## Style Decisions
+
+- Treat the credential seal as the primary proof mark for verified status, readiness, trust standards, and protected workspace states; supporting icons must defer to it.
+- Reserve Credential Gold for primary actions, verification and status artifacts, progress numerals, and editorial rules. Porcelain and pale sand remain the default quiet surfaces.
+- Keep visual storytelling anchored in Tanzania and Zanzibar veterinary contexts: homes, clinics, livestock, and practical field care—not generic wellness imagery.

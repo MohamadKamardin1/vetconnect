@@ -23,6 +23,7 @@ export const api = {
     }
   },
   login: (email: string, password: string) => api.request<{ access: string; refresh: string }>("/auth/login/", { method: "POST", body: JSON.stringify({ email, password }) }),
+  register: (payload: { email: string; phone_number?: string; first_name: string; last_name: string; password: string }) => api.request<{ id: string; email: string }>("/auth/register/", { method: "POST", body: JSON.stringify(payload) }),
   professionalDirectory: () => api.request<unknown[]>("/professionals/professionals/"),
   marketplace: () => api.request<unknown[]>("/marketplace/products/"),
   notifications: () => api.request<unknown[]>("/notifications/"),
