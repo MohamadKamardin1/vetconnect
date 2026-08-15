@@ -20,4 +20,4 @@
 - [x] Translate authentication and guided profile-studio onboarding.
 - [x] Translate role-specific dashboard navigation, readiness flows, empty states, and interactions.
 - [x] Verify language switching, local persistence, mobile layout, reduced motion, type safety, and production build.
-- [ ] Synchronize, commit, and push the bilingual frontend to `sultan`.
+- [x] Synchronize, commit, and push the bilingual frontend to `sultan`.
