@@ -49,4 +49,12 @@
 - [x] Add expiring six-digit email OTP issuance, hashed storage, attempt limits, resend controls, and activation-only verification endpoints.
 - [x] Add a responsive registration-to-verification interface with six-digit entry, resend feedback, and natural English–Kiswahili copy.
 - [x] Test unverified-account access boundaries, expiry, incorrect codes, resend throttling, activation, and complete production builds.
+- [ ] Synchronize, commit, and push the account-verification release to `sultan`.
 - [x] Synchronize, commit, and push the account-verification release to `sultan`.
+
+## Neutral common branding copy
+
+- [x] Audit repeated Tanzania and Zanzibar references across common branding, navigation, translation strings, and metadata.
+- [x] Remove unnecessary location repetition while keeping meaningful local-care references where they add context.
+- [x] Verify English and Kiswahili visual copy, accessibility labels, and production builds after the cleanup.
+- [x] Synchronize, commit, and push the neutral-branding cleanup to `sultan`.

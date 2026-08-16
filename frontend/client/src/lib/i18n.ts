@@ -2,7 +2,7 @@
 export type Locale = "en" | "sw";
 
 const phrases: Record<string, string> = {
-  "CARE, CONNECTED — FOR TANZANIA & ZANZIBAR": "HUDUMA ZILIZOUNGANISHWA — KWA TANZANIA NA ZANZIBAR",
+  "CARE, CONNECTED — WITH TRUST": "HUDUMA ZIMEUNGANISHWA — UAMINIFU UNAONEKANA",
   "Find care": "Tafuta huduma",
   "Care routes": "Njia za huduma",
   "For professionals": "Kwa wataalamu",
@@ -14,7 +14,7 @@ const phrases: Record<string, string> = {
   "Sign in to your care space": "Ingia kwenye nafasi yako ya huduma",
   "Search care": "Tafuta huduma",
   "Search professional, clinic, or service": "Tafuta mtaalamu, kliniki au huduma",
-  "A connected veterinary care network for animal owners, professionals, clinics, and accountable vendors across Tanzania and Zanzibar.": "Mtandao wa huduma za mifugo unaowaunganisha wamiliki wa wanyama, wataalamu, kliniki na wauzaji wawajibikaji kote Tanzania na Zanzibar.",
+  "A connected veterinary care network for animal owners, professionals, clinics, and accountable vendors.": "Mtandao wa huduma za mifugo unaowaunganisha wamiliki wa wanyama, wataalamu, kliniki na wauzaji wawajibikaji.",
   "Explore": "Gundua",
   "Safety": "Usalama",
   "Find verified care": "Tafuta huduma iliyothibitishwa",
@@ -361,7 +361,7 @@ const supplementaryPhrases: Record<string, string> = {
   "Admin": "Msimamizi",
   "Oversee verification, reports, operations, and platform integrity.": "Simamia uthibitisho, ripoti, uendeshaji na uadilifu wa jukwaa.",
   "Open the workspace and work through the visible guide. You can switch back here whenever you need a different role-focused view.": "Fungua nafasi ya kazi na pitia mwongozo unaoonekana. Unaweza kurudi hapa wakati wowote unapohitaji mwonekano mwingine unaolenga jukumu tofauti.",
-  "Tanzania & Zanzibar care network": "Mtandao wa huduma wa Tanzania na Zanzibar",
+  "Veterinary care network": "Mtandao wa huduma za mifugo",
   "Care that knows": "Huduma inayojua",
   "where": "ulipo",
   "you are.": "wewe ulipo.",
@@ -415,24 +415,24 @@ const supplementaryPhrases: Record<string, string> = {
   "Healthy animals are a shared, everyday practice.": "Wanyama wenye afya ni desturi ya pamoja ya kila siku.",
   "Build a private care space, then access guidance, records, trusted suppliers, and a community that understands the work.": "Jenga nafasi ya faragha ya huduma, kisha fikia mwongozo, rekodi, wauzaji wanaoaminika na jamii inayofahamu kazi hiyo.",
   "Role choice moves to the profile studio after sign-up.": "Uchaguzi wa jukumu huhamia kwenye studio ya wasifu baada ya kujisajili.",
-  "Healthy cattle and a farmer in Tanzania": "Ng'ombe wenye afya na mkulima nchini Tanzania",
+  "Healthy cattle and a farmer": "Ng'ombe wenye afya na mkulima",
   "Tools should clarify the next conversation, not substitute a professional diagnosis.": "Zana zinapaswa kufafanua mazungumzo yanayofuata, si kuchukua nafasi ya utambuzi wa mtaalamu.",
   "Create a private animal profile, invite the right professional into a record only when you choose, and keep routine care easier to follow.": "Unda wasifu wa faragha wa mnyama, mwalike mtaalamu sahihi kwenye rekodi pale tu unapochagua, na fanya huduma ya kawaida iwe rahisi kufuatilia.",
   "Set up your first animal": "Weka mnyama wako wa kwanza",
   "Switch your workspace when your responsibilities change. Access remains limited by verified backend roles.": "Badili nafasi yako ya kazi majukumu yako yanapobadilika. Ufikiaji unaendelea kuwa na mipaka ya majukumu ya mfumo wa nyuma yaliyothibitishwa.",
-  "profile · Tanzania & Zanzibar": "wasifu · Tanzania na Zanzibar",
+  "profile": "wasifu",
   "Profile studio & guide": "Studio ya wasifu na mwongozo",
   "Clinical tools": "Zana za kitabibu",
   "Billing": "Malipo",
   "KYC centre": "Kituo cha KYC",
 };
 
-/* Tanzania-first language layer: short everyday Kiswahili, with familiar product words such as profile, workspace, KYC, badge, and dashboard kept where they are clearer in use. */
-const tanzaniaNaturalPhrases: Record<string, string> = {
-  "CARE, CONNECTED — FOR TANZANIA & ZANZIBAR": "HUDUMA ZIMEUNGANISHWA — TANZANIA NA ZANZIBAR",
+/* Natural language layer: short everyday Kiswahili, with familiar product words such as profile, workspace, KYC, badge, and dashboard kept where they are clearer in use. */
+const naturalPhrases: Record<string, string> = {
+  "CARE, CONNECTED — WITH TRUST": "HUDUMA ZIMEUNGANISHWA — UAMINIFU UNAONEKANA",
   "Marketplace": "Marketplace",
   "My care space": "Nafasi yangu ya huduma",
-  "A connected veterinary care network for animal owners, professionals, clinics, and accountable vendors across Tanzania and Zanzibar.": "Mtandao wa huduma za mifugo unaounganisha wamiliki wa wanyama, wataalamu, kliniki na wauzaji wa kuaminika Tanzania na Zanzibar.",
+  "A connected veterinary care network for animal owners, professionals, clinics, and accountable vendors.": "Mtandao wa huduma za mifugo unaounganisha wamiliki wa wanyama, wataalamu, kliniki na wauzaji wa kuaminika.",
   "How the care route works": "Jinsi huduma inavyofanya kazi",
   "Community guidance": "Ushauri wa jamii",
   "Digital tools support care decisions but do not replace an in-person veterinary assessment when an animal may be ill or in danger.": "Digital tools zinaweza kusaidia, lakini haziwezi kuchukua nafasi ya daktari wa mifugo akimwona mnyama ambaye anaumwa au yuko hatarini.",
@@ -600,7 +600,7 @@ const tanzaniaNaturalPhrases: Record<string, string> = {
   "Network administrator": "Admin wa mtandao",
   "Oversee verification, reports, operations, and platform integrity.": "Simamia verification, reports, operations na usalama wa platform.",
   "Open the workspace and work through the visible guide. You can switch back here whenever you need a different role-focused view.": "Fungua workspace na fuata guide. Unaweza kurudi hapa kubadili view ya role nyingine.",
-  "Tanzania & Zanzibar care network": "Mtandao wa huduma Tanzania na Zanzibar",
+  "Veterinary care network": "Mtandao wa huduma za mifugo",
   "Care that knows": "Huduma inayokujua",
   "where": "ulipo",
   "you are.": "wewe ulipo.",
@@ -652,7 +652,7 @@ const tanzaniaNaturalPhrases: Record<string, string> = {
   "Create a private animal profile, invite the right professional into a record only when you choose, and keep routine care easier to follow.": "Unda animal profile binafsi, mpe daktari access ukiamua, na fuatilia huduma za kila siku kwa urahisi.",
   "Set up your first animal": "Ongeza mnyama wako wa kwanza",
   "Switch your workspace when your responsibilities change. Access remains limited by verified backend roles.": "Badili workspace majukumu yako yakibadilika. Access bado inaongozwa na roles zilizothibitishwa kwenye backend.",
-  "profile · Tanzania & Zanzibar": "profile · Tanzania na Zanzibar",
+  "profile": "profile",
   "Clinical tools": "Clinical tools",
   "KYC centre": "Kituo cha KYC",
   "Start an animal profile": "Anza animal profile",
@@ -754,7 +754,7 @@ const emailVerificationPhrases: Record<string, string> = {
   "We could not send a verification code. Please try again shortly.": "Hatujaweza kutuma code ya uthibitisho. Jaribu tena baada ya muda mfupi.",
 };
 
-Object.assign(phrases, supplementaryPhrases, tanzaniaNaturalPhrases, emailVerificationPhrases);
+Object.assign(phrases, supplementaryPhrases, naturalPhrases, emailVerificationPhrases);
 
 const swahiliToEnglish = Object.fromEntries(Object.entries(phrases).map(([english, swahili]) => [swahili, english]));
 
