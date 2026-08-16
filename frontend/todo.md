@@ -35,3 +35,10 @@
 - [x] Add smooth scrolling for all full-page and internal scroll surfaces without changing keyboard accessibility.
 - [x] Verify standard and reduced-motion behavior, then run TypeScript and production build checks.
 - [x] Synchronize, commit, and push the smooth-scrolling enhancement to `sultan`.
+
+## Desktop registration viewport fit
+
+- [x] Audit the current registration composition and its desktop height budget.
+- [x] Recompose registration so all required controls fit within the desktop viewport without page scrolling.
+- [x] Verify desktop no-scroll behavior, mobile scrolling fallback, keyboard access, and production build.
+- [ ] Synchronize, commit, and push the registration layout update to `sultan`.
