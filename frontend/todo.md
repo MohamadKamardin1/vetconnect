@@ -42,3 +42,11 @@
 - [x] Recompose registration so all required controls fit within the desktop viewport without page scrolling.
 - [x] Verify desktop no-scroll behavior, mobile scrolling fallback, keyboard access, and production build.
 - [x] Synchronize, commit, and push the registration layout update to `sultan`.
+
+## Email OTP account verification
+
+- [x] Audit existing account registration, token issuance, mail configuration, and frontend API handling.
+- [x] Add expiring six-digit email OTP issuance, hashed storage, attempt limits, resend controls, and activation-only verification endpoints.
+- [x] Add a responsive registration-to-verification interface with six-digit entry, resend feedback, and natural English–Kiswahili copy.
+- [x] Test unverified-account access boundaries, expiry, incorrect codes, resend throttling, activation, and complete production builds.
+- [x] Synchronize, commit, and push the account-verification release to `sultan`.

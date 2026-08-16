@@ -4,7 +4,8 @@ import uuid
 from datetime import timedelta
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.db import models
+from django.db import IntegrityError, models
+from django.utils.crypto import salted_hmac
 from django.utils import timezone
 
 
@@ -108,6 +109,7 @@ class OneTimeToken(models.Model):
     token_hash = models.CharField(max_length=64, unique=True)
     expires_at = models.DateTimeField()
     used_at = models.DateTimeField(null=True, blank=True)
+    attempt_count = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
@@ -124,3 +126,24 @@ class OneTimeToken(models.Model):
         self.used_at = timezone.now()
         self.save(update_fields=["used_at"])
         return True
+
+    @classmethod
+    def issue_email_code(cls, user, *, ttl_minutes=10):
+        """Create a six-digit verification code without ever storing the raw value."""
+        for _ in range(5):
+            code = f"{secrets.randbelow(1_000_000):06d}"
+            token_hash = salted_hmac("accounts.email-verification-code", f"{user.pk}:{code}").hexdigest()
+            try:
+                return cls.objects.create(
+                    user=user,
+                    purpose=cls.Purpose.EMAIL_VERIFY,
+                    token_hash=token_hash,
+                    expires_at=timezone.now() + timedelta(minutes=ttl_minutes),
+                ), code
+            except IntegrityError:
+                continue
+        raise RuntimeError("Could not create a unique email verification code.")
+
+    def matches_email_code(self, code):
+        candidate = salted_hmac("accounts.email-verification-code", f"{self.user_id}:{code}").hexdigest()
+        return secrets.compare_digest(self.token_hash, candidate)

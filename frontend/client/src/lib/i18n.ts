@@ -725,7 +725,36 @@ const tanzaniaNaturalPhrases: Record<string, string> = {
   "Review account and care updates that require your attention.": "Angalia updates za account na huduma zinazohitaji uangalizi wako.",
 };
 
-Object.assign(phrases, supplementaryPhrases, tanzaniaNaturalPhrases);
+const emailVerificationPhrases: Record<string, string> = {
+  "Continue to email verification": "Endelea kuthibitisha email",
+  "Start your verification": "Anza verification",
+  "Create your account first, then we will send your six-digit code.": "Jisajili kwanza, kisha tutakutumia code ya tarakimu sita.",
+  "One small security step": "Hatua ndogo ya usalama",
+  "Your care space starts with a verified email.": "Nafasi yako ya huduma inaanza na email iliyothibitishwa.",
+  "This protects your private account before you add animal records, choose a profile, or connect with care.": "Hii inalinda account yako kabla hujaongeza records za mnyama, kuchagua profile au kuwasiliana na huduma.",
+  "Your code is private. VetKonnect staff will never ask for it.": "Code yako ni siri. Wafanyakazi wa VetKonnect hawatakuiomba kamwe.",
+  "Email verification": "Kuthibitisha email",
+  "Check your inbox.": "Angalia email yako.",
+  "We sent a six-digit code to": "Tumetuma code ya tarakimu sita kwenda",
+  "Enter it below to finish creating your account.": "Weka hapa chini umalizie kutengeneza account yako.",
+  "Six-digit code": "Code ya tarakimu sita",
+  "Six-digit verification code": "Code ya uthibitisho ya tarakimu sita",
+  "Digit": "Tarakimu",
+  "of": "kati ya",
+  "That code is invalid or has expired. Request a new code and try again.": "Code hiyo si sahihi au imeisha muda. Omba code mpya ujaribu tena.",
+  "A new code is on its way to your email.": "Code mpya inatumwa kwenye email yako.",
+  "We could not send a new code just yet. Please try again shortly.": "Hatujaweza kutuma code mpya sasa hivi. Jaribu tena baada ya muda mfupi.",
+  "Verifying your code…": "Tunathibitisha code yako…",
+  "Verify and continue": "Thibitisha na endelea",
+  "Use another email": "Tumia email nyingine",
+  "Sending…": "Inatuma…",
+  "Resend code in": "Tuma code tena baada ya",
+  "Resend code": "Tuma code tena",
+  "The code expires in 10 minutes and has limited attempts for your safety.": "Code inaisha baada ya dakika 10, na una idadi ndogo ya majaribio kwa usalama wako.",
+  "We could not send a verification code. Please try again shortly.": "Hatujaweza kutuma code ya uthibitisho. Jaribu tena baada ya muda mfupi.",
+};
+
+Object.assign(phrases, supplementaryPhrases, tanzaniaNaturalPhrases, emailVerificationPhrases);
 
 const swahiliToEnglish = Object.fromEntries(Object.entries(phrases).map(([english, swahili]) => [swahili, english]));
 

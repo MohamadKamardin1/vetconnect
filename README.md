@@ -19,6 +19,10 @@ python manage.py runserver
 
 For PostgreSQL/PostGIS and Redis, use `docker compose up --build` after Docker is available. The current sandbox uses SQLite for foundation tests only.
 
+### Email verification
+
+New accounts remain inactive until the user submits the six-digit code sent to their email address. Configure the `DJANGO_EMAIL_*` and `EMAIL_VERIFICATION_*` values in `.env` with a transactional SMTP provider before production deployment. The local settings use Django’s console email backend and the test settings use the in-memory backend, so no real recipient email is sent during development or automated tests.
+
 ## Endpoints
 
 | Endpoint | Purpose |

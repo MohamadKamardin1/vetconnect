@@ -1,16 +1,48 @@
 import pytest
+import re
+from django.core import mail
 from django.utils import timezone
 from rest_framework.test import APIClient
 from accounts.models import OneTimeToken, RoleCode, User
 
 
 @pytest.mark.django_db
-def test_registration_assigns_owner_role_and_never_returns_password():
+def test_registration_sends_six_digit_email_code_and_keeps_account_inactive():
     response = APIClient().post("/api/v1/auth/register/", {"email": "owner@example.tz", "password": "StrongPassword123!", "first_name": "Asha"}, format="json")
     assert response.status_code == 201
     user = User.objects.get(email="owner@example.tz")
     assert user.has_role(RoleCode.OWNER)
+    assert user.is_active is False
+    assert user.email_verified_at is None
     assert "password" not in response.data
+    assert response.data["status"] == "verification_pending"
+    assert re.search(r"\b\d{6}\b", mail.outbox[-1].body)
+
+
+@pytest.mark.django_db
+def test_email_code_activates_account_and_returns_tokens():
+    client = APIClient()
+    registered = client.post("/api/v1/auth/register/", {"email": "verify@example.tz", "password": "StrongPassword123!", "first_name": "Asha"}, format="json")
+    assert registered.status_code == 201
+    code = re.search(r"\b(\d{6})\b", mail.outbox[-1].body).group(1)
+    verified = client.post("/api/v1/auth/verify-email/", {"email": "verify@example.tz", "code": code}, format="json")
+    assert verified.status_code == 200
+    assert verified.data["access"]
+    user = User.objects.get(email="verify@example.tz")
+    assert user.is_active is True
+    assert user.email_verified_at is not None
+
+
+@pytest.mark.django_db
+def test_email_code_expires_after_failed_attempt_limit():
+    client = APIClient()
+    client.post("/api/v1/auth/register/", {"email": "limited@example.tz", "password": "StrongPassword123!", "first_name": "Asha"}, format="json")
+    for _ in range(5):
+        response = client.post("/api/v1/auth/verify-email/", {"email": "limited@example.tz", "code": "000000"}, format="json")
+        assert response.status_code == 400
+    token = OneTimeToken.objects.get(user__email="limited@example.tz", purpose=OneTimeToken.Purpose.EMAIL_VERIFY)
+    assert token.used_at is not None
+    assert token.attempt_count == 5
 
 
 @pytest.mark.django_db

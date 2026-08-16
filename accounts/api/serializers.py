@@ -34,9 +34,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         role = validated_data.pop("role", "OWNER")
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create_user(is_active=False, **validated_data)
         user.assign_role(role)
         return user
+
+
+class EmailVerificationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.RegexField(r"^\d{6}$", max_length=6, min_length=6, error_messages={"invalid": "Enter the six-digit code from your email."})
+
+
+class EmailVerificationResendSerializer(serializers.Serializer):
+    email = serializers.EmailField()
 
 
 class LoginSerializer(serializers.Serializer):
