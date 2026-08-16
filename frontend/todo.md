@@ -41,4 +41,4 @@
 - [x] Audit the current registration composition and its desktop height budget.
 - [x] Recompose registration so all required controls fit within the desktop viewport without page scrolling.
 - [x] Verify desktop no-scroll behavior, mobile scrolling fallback, keyboard access, and production build.
-- [ ] Synchronize, commit, and push the registration layout update to `sultan`.
+- [x] Synchronize, commit, and push the registration layout update to `sultan`.
