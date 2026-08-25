@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "billing",
     "feed",
     "disease",
+    "ai",
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ SPECTACULAR_SETTINGS = {
         "DecisionSupportStatusEnum": ["COMPLETED", "MISSING_CONFIGURATION", "INVALID"],
         "CommunityPublicationStatusEnum": ["DRAFT", "PENDING_REVIEW", "PUBLISHED", "REJECTED", "HIDDEN"],
         "CommunityReportStatusEnum": ["OPEN", "REVIEWED", "DISMISSED"],
+        "AIInteractionStatusEnum": ["COMPLETED", "FALLBACK", "FAILED", "SUPPRESSED"],
     },
 }
 

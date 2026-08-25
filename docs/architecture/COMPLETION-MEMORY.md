@@ -214,6 +214,25 @@
 **Next:** Phase 13 / Prompt 12 AI integration. Implement provider interfaces, privacy filtering, fallback behavior, auditability, timeouts, and explicit clinical safety boundaries before exposing any AI-assisted feature.
 
 
+## Phase 13 — AI integration (provider boundary, privacy filtering, fallback)
+
+*(Corresponds to "Phase 12 / Prompt 12" in the `IMPLEMENTATION-TODO.md` table; this document's own section numbering has run one ahead of that table's since the initial spec-ingestion step was counted separately here.)*
+
+**Status:** COMPLETE.
+
+**Implemented:** New standalone `ai` app, additive only — `disease` and `feed` apps were not modified. `AIProviderConfig` and `AIFeatureConfig` (DB-configured, mirroring the existing `FeedRule`/`DiseaseRule` versioned-config pattern) gate whether/how a feature calls a provider, with an explicit per-feature field allowlist (`allowed_context_fields`) controlling exactly what leaves the process boundary. `AIInteraction` is the audit log (redacted payload, input hash, provider/model version, status, latency, human-review state), recipient-scoped like every other audit model in the repository. `ai/services.invoke_ai_feature()` always computes the deterministic result locally first and only ever appends a non-authoritative narrative string on top of it; disabled features, unconfigured/failed providers, and exceptions all degrade to the unchanged deterministic result (`SUPPRESSED`/`FALLBACK`) rather than failing the request. `NoopProvider` and an offline `ConsoleProvider` are the only adapters implemented; a real model provider is a deployment boundary via `BaseAIProvider`/`PROVIDER_REGISTRY`. New endpoints: `POST /api/v1/ai/disease-assist/`, `POST /api/v1/ai/feed-assist/` (wrap the existing `disease`/`feed` engines unchanged), `GET /api/v1/ai/interactions/` (user-scoped audit read). Admin registered for provider/feature config and read-only interaction review.
+
+**Real verification:** `python manage.py makemigrations ai --check` reported no changes. `pytest ai -q` passed with 7 tests (one test's assertion was corrected mid-verification to account for the project's global `PageNumberPagination` response envelope — not an application defect). `python manage.py check` passed with no issues. `python manage.py spectacular --file schema.yaml --validate` passed with 0 errors and 2 non-blocking `status`-field enum-naming warnings (the same pre-existing class of warning already documented in Phases 8 and 11, not introduced here); fixing 2 initial schema errors required changing `responses={200: dict}` to `responses={200: OpenApiTypes.OBJECT}` on the two `APIView`-based endpoints. Verified by the operator on Python 3.14.6 / Django 5.2.17 / djangorestframework 3.18.0 / daphne 4.2.3 / drf-spectacular 0.30.0, outside the sandbox (which has no Django install or network access).
+
+**Safety evidence:** deterministic engine outputs are never altered by AI involvement; free-text/identifying fields (owner identity, raw location) are excluded from every allowlist shipped in tests; every request produces an audit record regardless of outcome; emergency/high-urgency disease results are always flagged for human review; a fixed non-diagnostic disclaimer is always attached; provider exceptions degrade to fallback rather than a server error; cross-user interaction reads return an empty, correctly-scoped page rather than another user's data.
+
+**Not implemented in this phase:** clinical scribe, clinical guidance, client-summary, and forum-safety AI features from the specification table (`docs/specifications/16-ai-specification.md`) — only disease-assist and feed-assist narrative wrapping is in scope, since those are the two features with an existing deterministic engine to wrap safely.
+
+**Handoff:** `docs/architecture/HANDOFF-12-AI-INTEGRATION.md`.
+
+**Next:** Phase 14 (table) / Prompt 13: Admin, audit, security hardening.
+
+
 ## Post-Prompt extension — Paid veterinarian verification badges and ClickPesa
 
 **Status:** COMPLETE in the sandbox; production credentials and merchant configuration remain pending.
