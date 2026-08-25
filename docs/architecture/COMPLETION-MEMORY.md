@@ -250,3 +250,17 @@
 **Known production boundary:** Sandbox verification used SQLite, in-memory Channels, and mocked provider behavior. Live deployment still requires approved weekly/monthly/yearly prices, ClickPesa client ID/API key/checksum key, application webhook configuration for payment success/failure, TLS, PostgreSQL/PostGIS, Redis, Celery worker and Beat processes, monitoring, and merchant test transactions.
 
 **Handoff:** `docs/architecture/HANDOFF-BILLING-CLICKPESA-BADGES.md`.
+
+## Phase 14 — Admin, audit, security hardening
+
+*(Corresponds to "Phase 13 / Prompt 13" in the `IMPLEMENTATION-TODO.md` table.)*
+
+**Status:** CODE COMPLETE — VERIFICATION PENDING (operator has not yet run the commands below in a real Django environment).
+
+**Implemented:** New `audit` app (`AuditLogEntry`, `record_audit_event()`, admin-only immutable read API at `/api/v1/audit/logs/`) and new `privacy` app (`DataExportRequest`/`DataDeletionRequest`, self-service `POST /api/v1/privacy/export/`, two-step `POST /api/v1/privacy/deletion/` then `POST /api/v1/privacy/deletion/confirm/`). `accounts/services.py` gained `anonymize_user()`, extracted verbatim (byte-for-byte identical field list/values) from the existing admin-delete endpoint's inline logic, now shared by both admin-triggered and self-service deletion. `accounts/api/admin_views.py`'s three existing admin actions (suspend/reactivate/delete) each now call `record_audit_event()` — additive-only diff, no response shape or status code changed. No other app was edited; `privacy/services.collect_user_export()` reads from `animals`, `disease`, `feed`, `ai`, `notifications` but writes to none of them.
+
+**Real verification:** not yet run — this sandbox has no Django install/network access, same limitation as Phase 12. Every new/edited file passed `python3 -m py_compile`. Both migrations were hand-authored and field-checked against their models. 7 tests in `audit/tests/test_audit.py` and `privacy/tests/test_privacy.py` cover: admin actions creating correctly-shaped audit entries, audit log admin-only access and action filtering, export payload correctly scoped to the requesting user only, export/deletion request lists scoped per-user, and the two-step deletion flow (create leaves the account untouched; confirm executes it; confirm with no pending request returns 400). `accounts/tests/test_auth.py`'s existing suspend/reactivate/delete test should be re-run alongside these to confirm the `anonymize_user` extraction didn't change behavior.
+
+**Handoff:** `docs/architecture/HANDOFF-13-ADMIN-AUDIT-SECURITY.md`.
+
+**Next:** Run `python manage.py makemigrations audit privacy --check`, `python -m pytest audit privacy accounts -q`, `python manage.py check`, `python manage.py spectacular --file schema.yaml --validate` in a real environment and record results here before marking Phase 13 COMPLETE in `IMPLEMENTATION-TODO.md`. Not in scope for this phase: module-specific admin consoles (verification queues, geography import, moderation, content CMS, payments reconciliation, analytics) from the full 13-module admin specification — this phase built the shared audit/export/deletion primitives those will depend on.

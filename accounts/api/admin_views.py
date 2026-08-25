@@ -5,6 +5,8 @@ from accounts.api.serializers import UserSerializer
 from accounts.api.admin_serializers import AdminActionSerializer
 from accounts.models import User
 from accounts.permissions import IsAdministrator
+from accounts.services import anonymize_user
+from audit.services import record_audit_event
 
 
 class AdminUserListView(generics.ListAPIView):
@@ -28,9 +30,11 @@ class AdminUserSuspendView(generics.GenericAPIView):
 
     def post(self, request, pk):
         user = self.get_object()
+        was_active = user.is_active
         user.is_active = False
         user.suspended_at = timezone.now()
         user.save(update_fields=["is_active", "suspended_at", "updated_at"])
+        record_audit_event(actor=request.user, action="USER_SUSPENDED", target=user, before={"is_active": was_active}, after={"is_active": False}, reason=request.data.get("reason", ""))
         return Response({"status": "suspended"})
 
 
@@ -41,9 +45,11 @@ class AdminUserReactivateView(generics.GenericAPIView):
 
     def post(self, request, pk):
         user = self.get_object()
+        was_active = user.is_active
         user.is_active = True
         user.suspended_at = None
         user.save(update_fields=["is_active", "suspended_at", "updated_at"])
+        record_audit_event(actor=request.user, action="USER_REACTIVATED", target=user, before={"is_active": was_active}, after={"is_active": True}, reason=request.data.get("reason", ""))
         return Response({"status": "active"})
 
 
@@ -53,10 +59,6 @@ class AdminUserDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAdministrator]
 
     def perform_destroy(self, instance):
-        instance.is_active = False
-        instance.email = f"deleted+{instance.pk}@invalid.local"
-        instance.phone_number = None
-        instance.first_name = "Deleted"
-        instance.last_name = "User"
-        instance.set_unusable_password()
-        instance.save(update_fields=["is_active", "email", "phone_number", "first_name", "last_name", "password", "updated_at"])
+        before = {"is_active": instance.is_active, "email": instance.email}
+        anonymize_user(instance)
+        record_audit_event(actor=self.request.user, action="USER_DELETED", target=instance, before=before, after={"is_active": False}, reason=self.request.data.get("reason", ""))

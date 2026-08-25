@@ -89,6 +89,24 @@ def issue_email_verification_code(user):
     return token
 
 
+def anonymize_user(user):
+    """
+    Irreversibly scrub personally-identifying fields on a user record without deleting the row,
+    preserving referential integrity for everything that references it (animals, assessments,
+    audit entries, etc.). Shared by administrator-triggered deletion (accounts.api.admin_views)
+    and self-service deletion (privacy.services.confirm_deletion) so both paths anonymize
+    identically rather than maintaining two copies of security-sensitive scrubbing logic.
+    """
+    user.is_active = False
+    user.email = f"deleted+{user.pk}@invalid.local"
+    user.phone_number = None
+    user.first_name = "Deleted"
+    user.last_name = "User"
+    user.set_unusable_password()
+    user.save(update_fields=["is_active", "email", "phone_number", "first_name", "last_name", "password", "updated_at"])
+    return user
+
+
 def verify_email_code(*, email, code):
     """Verify a code atomically and activate the matching pending account."""
     now = timezone.now()

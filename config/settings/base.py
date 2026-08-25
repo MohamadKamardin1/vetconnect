@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "feed",
     "disease",
     "ai",
+    "audit",
+    "privacy",
 ]
 
 MIDDLEWARE = [
