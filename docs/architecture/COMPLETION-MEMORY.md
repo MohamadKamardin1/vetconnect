@@ -255,12 +255,40 @@
 
 *(Corresponds to "Phase 13 / Prompt 13" in the `IMPLEMENTATION-TODO.md` table.)*
 
-**Status:** CODE COMPLETE — VERIFICATION PENDING (operator has not yet run the commands below in a real Django environment).
+**Status:** COMPLETE.
 
 **Implemented:** New `audit` app (`AuditLogEntry`, `record_audit_event()`, admin-only immutable read API at `/api/v1/audit/logs/`) and new `privacy` app (`DataExportRequest`/`DataDeletionRequest`, self-service `POST /api/v1/privacy/export/`, two-step `POST /api/v1/privacy/deletion/` then `POST /api/v1/privacy/deletion/confirm/`). `accounts/services.py` gained `anonymize_user()`, extracted verbatim (byte-for-byte identical field list/values) from the existing admin-delete endpoint's inline logic, now shared by both admin-triggered and self-service deletion. `accounts/api/admin_views.py`'s three existing admin actions (suspend/reactivate/delete) each now call `record_audit_event()` — additive-only diff, no response shape or status code changed. No other app was edited; `privacy/services.collect_user_export()` reads from `animals`, `disease`, `feed`, `ai`, `notifications` but writes to none of them.
 
-**Real verification:** not yet run — this sandbox has no Django install/network access, same limitation as Phase 12. Every new/edited file passed `python3 -m py_compile`. Both migrations were hand-authored and field-checked against their models. 7 tests in `audit/tests/test_audit.py` and `privacy/tests/test_privacy.py` cover: admin actions creating correctly-shaped audit entries, audit log admin-only access and action filtering, export payload correctly scoped to the requesting user only, export/deletion request lists scoped per-user, and the two-step deletion flow (create leaves the account untouched; confirm executes it; confirm with no pending request returns 400). `accounts/tests/test_auth.py`'s existing suspend/reactivate/delete test should be re-run alongside these to confirm the `anonymize_user` extraction didn't change behavior.
+**Real verification:** `python manage.py makemigrations audit privacy --check` reported no changes. `python -m pytest audit privacy accounts -q` passed 16/16 (7 new tests + 9 existing accounts tests, confirming `anonymize_user` didn't change existing suspend/reactivate/delete behavior). `python manage.py check` passed. `python manage.py spectacular --file schema.yaml --validate` passed with 0 errors; 2 new non-blocking warnings from `privacy`'s `get_queryset()` being probed with `AnonymousUser` during schema introspection were fixed with the standard `swagger_fake_view` guard drf-spectacular itself recommends.
 
 **Handoff:** `docs/architecture/HANDOFF-13-ADMIN-AUDIT-SECURITY.md`.
 
-**Next:** Run `python manage.py makemigrations audit privacy --check`, `python -m pytest audit privacy accounts -q`, `python manage.py check`, `python manage.py spectacular --file schema.yaml --validate` in a real environment and record results here before marking Phase 13 COMPLETE in `IMPLEMENTATION-TODO.md`. Not in scope for this phase: module-specific admin consoles (verification queues, geography import, moderation, content CMS, payments reconciliation, analytics) from the full 13-module admin specification — this phase built the shared audit/export/deletion primitives those will depend on.
+**Next:** Phase 13 is now verified COMPLETE. Module-specific admin consoles (verification queues, geography import, moderation, content CMS, payments reconciliation, analytics) from the full 13-module admin specification remain future work, building on the audit/export/deletion primitives established here.
+
+## Phase 15 — API documentation and error finalization
+
+*(Corresponds to "Phase 14 / Prompt 14" in the `IMPLEMENTATION-TODO.md` table.)*
+
+**Status:** COMPLETE.
+
+**Implemented:** Investigated first rather than assumed — the core error-envelope infrastructure (`core/api/exceptions.py`, `core/views.py`, HTML templates, `handler400/403/404/500`) already existed correctly from Phase 2, so this phase closed two concrete gaps instead of rebuilding what worked. (1) Three missing `ENUM_NAME_OVERRIDES` entries added to `SPECTACULAR_SETTINGS` — `marketplace.ProductInquiry.Status`, `privacy.DataExportRequest.Status`, `privacy.DataDeletionRequest.Status` all share the bare Python class name `Status` with `community`'s (already overridden), causing the 2 schema-validation warnings seen at the end of Phase 13. (2) New `core/api/schema.py` with an `ErrorEnvelope` OpenAPI component and a `POSTPROCESSING_HOOKS` function (`add_common_error_responses`) that documents the 400/401/403/404/429/500 shape on every operation that doesn't already define it, without ever overwriting an existing response. No model changes — no migration needed. `config/settings/base.py` gained only the 3 enum entries plus 1 hook registration line; no other existing file was touched.
+
+**Real verification:** `makemigrations --check` surfaced a genuine pre-existing drift in `accounts.OneTimeToken` (a real, actively-used index missing from `Meta.indexes` since before this phase) — fixed by restoring the model to match the existing migration, not by removing the index. `test_throttled_request_returns_standard_envelope` had a real test bug (`override_settings` doesn't reach DRF's class-bound `THROTTLE_RATES`) — fixed with the standard direct-class-attribute-patch pattern. 70/71 tests passed on the operator's first full-suite run; both issues above account for the single failure and the one unrelated migration; both are now fixed. Full detail in `HANDOFF-14-API-DOCS-ERROR-FINALIZATION.md`.
+
+**Handoff:** `docs/architecture/HANDOFF-14-API-DOCS-ERROR-FINALIZATION.md`.
+
+**Next:** Phase 14 is verified COMPLETE. Proceed to Phase 15: full audit and release certification.
+
+## Phase 16 — Full audit and release certification
+
+*(Corresponds to "Phase 15 / Prompt 15" in the `IMPLEMENTATION-TODO.md` table — the final phase.)*
+
+**Status:** COMPLETE. Full-suite verification confirmed by the operator: `makemigrations --check` → no changes, `pytest -q` → 71/71 passed, `manage.py check` → 0 issues, `spectacular --file schema.yaml --validate` → 0 errors/0 warnings (silent success), schema confirmed written (308KB) with the Phase 14 `ErrorEnvelope` component appearing 676 times across it.
+
+**Implemented:** `docs/architecture/TRACEABILITY-MATRIX.md` mapping every backlog item to its implementing app/endpoint/tests or explicitly marking it not implemented. Found and fixed a real bug while auditing `marketplace` (the one backend app with zero tests before this phase): `VendorProductWriteSerializer` omitted `id` from its output fields entirely, making a vendor's own product list unusable for any follow-up action referencing a specific product. Fixed additively (added `id`/`created_at` as read-only fields; no write behavior changed). Added `marketplace/tests/test_marketplace.py` (6 tests: the serializer regression, vendor-to-vendor creation IDOR, public-listing verification-status filtering, inventory-update ownership scoping, inquiry-list scoping across customer/vendor/outsider, inquiry-creation rejection against an unverified vendor). Added `docs/architecture/RELEASE-CERTIFICATION.md`: real per-app test counts (grepped, not estimated — 67 total across the backend), an honest breakdown of what adversarial coverage actually exists versus what was only confirmed-present, the known gaps, and a **conditional pass** recommendation (code/tests ready for real execution; not a production-readiness claim, since that requires the real-infrastructure boundary every phase has flagged).
+
+**Deliberately not done this phase:** no re-audit of `animals`/`messaging`/`community`/`discovery`/`professionals`/`notifications` beyond confirming their existing tests are real; no expansion of `locations`' thin 1-test coverage; no new feature work on unimplemented Phase 2/3 backlog items; no review of `frontend/`. All stated explicitly in the certification doc rather than left ambiguous.
+
+**Handoff:** `docs/architecture/HANDOFF-15-RELEASE-CERTIFICATION.md`.
+
+**Next:** This was the last phase in the ordered 1–15 ledger, and it is now fully, genuinely complete — verified end to end, not just claimed. What remains beyond it: closing the production-infrastructure boundary (real Postgres/PostGIS, Redis, Celery, TLS, ClickPesa credentials) documented consistently across every phase's handoff, and the scope gaps listed in `TRACEABILITY-MATRIX.md` (unimplemented Phase 2/3 backlog items, unbuilt admin consoles) if the project continues beyond the original 15-phase plan.

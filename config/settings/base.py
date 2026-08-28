@@ -138,7 +138,11 @@ SPECTACULAR_SETTINGS = {
         "CommunityPublicationStatusEnum": ["DRAFT", "PENDING_REVIEW", "PUBLISHED", "REJECTED", "HIDDEN"],
         "CommunityReportStatusEnum": ["OPEN", "REVIEWED", "DISMISSED"],
         "AIInteractionStatusEnum": ["COMPLETED", "FALLBACK", "FAILED", "SUPPRESSED"],
+        "MarketplaceInquiryStatusEnum": ["OPEN", "RESPONDED", "CLOSED"],
+        "DataExportStatusEnum": ["PENDING", "COMPLETED", "FAILED"],
+        "DataDeletionStatusEnum": ["PENDING", "COMPLETED", "CANCELLED"],
     },
+    "POSTPROCESSING_HOOKS": ["core.api.schema.add_common_error_responses"],
 }
 
 CHANNEL_LAYERS = {

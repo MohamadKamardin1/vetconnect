@@ -112,6 +112,9 @@ class OneTimeToken(models.Model):
     attempt_count = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [models.Index(fields=["user", "purpose", "expires_at", "used_at"], name="accounts_otp_verification_idx")]
+
     @classmethod
     def issue(cls, user, purpose, ttl_minutes=15):
         raw = secrets.token_urlsafe(32)

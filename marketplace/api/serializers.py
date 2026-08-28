@@ -43,7 +43,8 @@ class InventoryUpdateSerializer(serializers.Serializer):
 class VendorProductWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["vendor", "sku", "name", "category", "description", "price_amount", "currency", "requires_prescription", "is_active"]
+        fields = ["id", "vendor", "sku", "name", "category", "description", "price_amount", "currency", "requires_prescription", "is_active", "created_at"]
+        read_only_fields = ["id", "created_at"]
 
     def validate_vendor(self, vendor):
         request = self.context["request"]

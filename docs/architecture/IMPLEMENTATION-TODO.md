@@ -16,9 +16,9 @@ This is the source-of-truth execution ledger. A phase is marked complete only af
 | 10 | Feed and disease decision support | Deterministic engines, disclaimers, referral | **COMPLETE** |
 | 11 | Notifications and background tasks | Celery, preferences, provider adapters | **COMPLETE** |
 | 12 | AI integration | Provider boundary, privacy filtering, fallback | **COMPLETE** |
-| 13 | Admin, audit, security hardening | Admin APIs, audit, export/deletion, operations | **CODE COMPLETE — VERIFICATION PENDING** |
-| 14 | API documentation and error finalization | OpenAPI coverage, error envelope, HTML errors | TODO |
-| 15 | Full audit and release certification | Traceability matrix, adversarial tests, certification | TODO |
+| 13 | Admin, audit, security hardening | Admin APIs, audit, export/deletion, operations | **COMPLETE** |
+| 14 | API documentation and error finalization | OpenAPI coverage, error envelope, HTML errors | **COMPLETE** |
+| 15 | Full audit and release certification | Traceability matrix, adversarial tests, certification | **COMPLETE** |
 
 ## Rules
 
